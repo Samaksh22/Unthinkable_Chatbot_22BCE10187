@@ -1,4 +1,4 @@
-question,answer
-"How do I reset my password?","You can reset your password by going to the 'Account Settings' page and clicking on 'Forgot Password'."
-"What are the shipping options?","We offer standard shipping (5-7 business days) and express shipping (1-2 business days)."
-"How can I track my order?","Once your order ships, you will receive an email with a tracking number and a link to the carrier's website."
+question                        , answer
+"How do I reset my password?"   , "You can reset your password by going to the 'Account Settings' page and clicking on 'Forgot Password'."
+"What are the shipping options?", "We offer standard shipping (5-7 business days) and express shipping (1-2 business days)."
+"How can I track my order?"     , "Once your order ships, you will receive an email with a tracking number and a link to the carrier's website."
