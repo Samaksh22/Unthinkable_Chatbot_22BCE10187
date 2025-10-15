@@ -1,9 +1,13 @@
-// Get references to the HTML elements
+// frontend/script.js
+
+// --- Element References ---
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
+const clearBtn = document.getElementById('clear-btn');
+const resetBtn = document.getElementById('reset-btn');
 
-// API URLs for the backend
+// --- API URLs ---
 const CHAT_API_URL = 'http://127.0.0.1:8000/chat';
 const HISTORY_API_URL = 'http://127.0.0.1:8000/history';
 
@@ -17,7 +21,7 @@ console.log("Current Session ID:", sessionId);
 
 // --- Functions ---
 
-// Function to add a single message to the chat box
+// Adds a single message to the chat box
 function addMessage(message, sender) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', `${sender}-message`);
@@ -25,38 +29,31 @@ function addMessage(message, sender) {
     pElement.textContent = message;
     messageElement.appendChild(pElement);
     chatBox.appendChild(messageElement);
-    // Scroll to the bottom of the chat box
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// NEW: Function to load chat history from the server
+// Loads chat history from the server
 async function loadChatHistory() {
-    if (!sessionId) return; // Don't run if there's no session
-
     try {
         const response = await fetch(`${HISTORY_API_URL}/${sessionId}`);
-        if (!response.ok) {
-            // If history is not found (404), it's okay, it's just a new chat.
-            if (response.status === 404) return;
-            throw new Error('Failed to fetch history');
-        }
-        const history = await response.json();
+        if (!response.ok) throw new Error('No history found.');
         
-        // If history exists, clear the default welcome message
+        const history = await response.json();
+        chatBox.innerHTML = '';
         if (history.length > 0) {
-            chatBox.innerHTML = ''; 
-            history.forEach(item => {
-                addMessage(item.message, item.sender);
-            });
+            history.forEach(item => addMessage(item.message, item.sender));
+        } else {
+            addMessage("Hello! How can I help you today?", "bot");
         }
     } catch (error) {
-        console.error("Could not load chat history:", error);
+        chatBox.innerHTML = '';
+        addMessage("Hello! How can I help you today?", "bot");
     }
 }
 
 // --- Event Listeners ---
 
-// Event listener for the form submission
+// Handle sending a message
 chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userMessage = userInput.value.trim();
@@ -69,26 +66,35 @@ chatForm.addEventListener('submit', async (e) => {
         const response = await fetch(CHAT_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                session_id: sessionId,
-                message: userMessage,
-            }),
+            body: JSON.stringify({ session_id: sessionId, message: userMessage }),
         });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Network response was not ok. Status: ${response.status}. Body: ${errorText}`);
-        }
-
+        if (!response.ok) throw new Error('Network response was not ok.');
         const data = await response.json();
         addMessage(data.response, 'bot');
-
     } catch (error) {
         console.error('Fetch Error:', error);
-        addMessage(`Sorry, there was an error connecting to the bot. Details: ${error.message}`, 'bot');
+        addMessage('Sorry, something went wrong. Please try again.', 'bot');
     }
 });
 
+// NEW: Clear Chat Button
+clearBtn.addEventListener('click', async () => {
+    if (!confirm('Are you sure you want to clear this chat history?')) return;
+    try {
+        await fetch(`${HISTORY_API_URL}/${sessionId}`, { method: 'DELETE' });
+        chatBox.innerHTML = ''; // Visually clear the chat
+        addMessage("Hello! How can I help you today?", "bot"); // Add welcome message back
+    } catch (error) {
+        console.error('Failed to clear chat:', error);
+    }
+});
+
+// NEW: Reset Session Button
+resetBtn.addEventListener('click', () => {
+    if (!confirm('Are you sure you want to start a new session?')) return;
+    localStorage.removeItem('chat_session_id'); // Remove old session ID
+    location.reload(); // Reload the page to generate a new session
+});
+
 // --- Initial Load ---
-// Load the chat history as soon as the page is ready
 document.addEventListener('DOMContentLoaded', loadChatHistory);

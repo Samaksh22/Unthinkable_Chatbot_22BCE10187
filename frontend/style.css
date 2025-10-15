@@ -33,13 +33,15 @@ body {
     padding: 1rem 1.5rem;
     border-bottom: 1px solid transparent;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
+
 .chat-header h2 {
     margin: 0;
     font-weight: 500;
     font-size: 1.25rem;
 }
+
 .chat-header p {
     margin: 0;
     font-size: 0.8rem;
@@ -53,7 +55,8 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Adds space between messages */
+    gap: 12px;
+    /* Adds space between messages */
 }
 
 .message {
@@ -96,6 +99,7 @@ body {
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
 }
+
 #user-input:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(94, 114, 228, 0.3);
@@ -114,9 +118,47 @@ body {
     align-items: center;
     transition: background-color 0.2s ease;
 }
+
 #send-btn svg {
     color: white;
 }
+
 #send-btn:hover {
     background-color: #485ac5;
+}
+
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    /* (keep other header styles) */
+}
+
+.header-title {
+    text-align: left;
+}
+
+
+/* --- NEW: Header Buttons --- */
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 5px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.header-buttons button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }

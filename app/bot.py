@@ -23,12 +23,11 @@ ESCALATION_PHRASE = "I am unable to answer this question."
 
 # The instruction template for the LLM
 PROMPT_TEMPLATE = """
-You are a helpful and friendly customer support agent.
-Use the conversation history and the provided FAQ context to answer the user's question.
-Answer ONLY with the information from the FAQ context. Do not make up information.
+You are a helpful and friendly customer support agent. Your primary goal is to answer questions using the provided FAQ context.
 
-If the FAQ context does not contain the answer, you MUST respond with the exact phrase:
-'{escalation_phrase}'
+1.  First, analyze the "User Question". If it is a simple greeting or conversational pleasantry (like "hello", "how are you?", "thanks"), respond naturally and kindly.
+2.  For all other questions, you MUST use the "FAQ Context" to find the answer. Answer ONLY with the information from the FAQ context. Do not make up information.
+3.  If the "FAQ Context" is 'No relevant FAQ found.' AND the question is not a simple greeting, you MUST respond with the exact phrase: '{escalation_phrase}'
 
 ---
 Conversation History:
@@ -89,6 +88,16 @@ class Chatbot:
 
     def get_response(self, session_id: str, user_message: str) -> str:
         """The main method to get a response from the chatbot."""
+        
+        # --- NEW: Hardcoded Greeting Check ---
+        # Normalize user input for a more reliable check
+        normalized_message = user_message.lower().strip("?!., ")
+        greetings = {"hello", "hi", "hii", "hey", "how are you"}
+        
+        if normalized_message in greetings:
+            return "Hello! How can I assist you today?"
+        # --- End of New Logic ---
+
         # 1. Retrieve conversation history from the database
         history_records = database.get_conversation_history(session_id)
         formatted_history = self._format_history(history_records)
@@ -112,7 +121,7 @@ class Chatbot:
             return "I'm sorry, I can't seem to find the answer. I will escalate this to a human agent for you."
         else:
             return llm_response
-
+        
 # Create a single instance of the Chatbot.
 # This is efficient as models are loaded only once when the app starts.
 chatbot_instance = Chatbot()

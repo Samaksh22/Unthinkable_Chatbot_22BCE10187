@@ -12,14 +12,17 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <h2>AI Support Bot</h2>
-            <p>Online</p>
-        </div>
-        <div class="chat-box" id="chat-box">
-            <div class="message bot-message">
-                <p>Hello! How can I help you today?</p>
+            <div class="header-title">
+                <h2>AI Support Bot</h2>
+                <p>Online</p>
+            </div>
+            <div class="header-buttons">
+                <button id="clear-btn" title="Clear this chat">Clear</button>
+                <button id="reset-btn" title="Start a new session">Reset</button>
             </div>
         </div>
+        <div class="chat-box" id="chat-box">
+            </div>
         <form class="chat-input-form" id="chat-form">
             <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
             <button type="submit" id="send-btn">

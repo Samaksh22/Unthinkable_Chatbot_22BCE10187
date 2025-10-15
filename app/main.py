@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 # Import the components we've built
 from .models import ChatMessage
 from .bot import chatbot_instance
-from .database import save_message, get_conversation_history
+from .database import *
 
 # --- FastAPI Application Setup ---
 
@@ -56,6 +56,13 @@ def get_history(session_id: str):
     """Retrieves the full conversation history for a given session_id."""
     history = get_conversation_history(session_id, limit=50) # No more "database."
     return [{"sender": msg.sender, "message": msg.message} for msg in history]
+
+
+@app.delete("/history/{session_id}", tags=["Chat"])
+def clear_history(session_id: str):
+    """Deletes the full conversation history for a given session_id."""
+    delete_conversation_history(session_id)
+    return {"status": "success", "message": "Chat history cleared."}
 
 # --- Serve Frontend ---
 # Mount the 'frontend' directory to serve static files like CSS and JS

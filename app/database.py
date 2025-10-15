@@ -51,3 +51,15 @@ def get_conversation_history(session_id: str, limit: int = 10):
         return list(reversed(history))
     finally:
         db.close()
+
+def delete_conversation_history(session_id: str):
+    """Deletes all messages for a given session_id."""
+    db = SessionLocal()
+    try:
+        # Query all messages for the session and delete them
+        db.query(ConversationHistory).filter(
+            ConversationHistory.session_id == session_id
+        ).delete()
+        db.commit()
+    finally:
+        db.close()
