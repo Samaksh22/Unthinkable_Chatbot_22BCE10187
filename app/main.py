@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 # Import the components we've built
 from .models import ChatMessage
 from .bot import chatbot_instance
-from .database import save_message
+from .database import save_message, get_conversation_history
 
 # --- FastAPI Application Setup ---
 
@@ -49,6 +49,13 @@ def chat_endpoint(request: ChatMessage):
         message=bot_response
     )
     return {"response": bot_response}
+
+# app/main.py
+@app.get("/history/{session_id}", tags=["Chat"])
+def get_history(session_id: str):
+    """Retrieves the full conversation history for a given session_id."""
+    history = get_conversation_history(session_id, limit=50) # No more "database."
+    return [{"sender": msg.sender, "message": msg.message} for msg in history]
 
 # --- Serve Frontend ---
 # Mount the 'frontend' directory to serve static files like CSS and JS
