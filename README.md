@@ -2,6 +2,12 @@
 
 This project is an AI-powered customer support chatbot designed to handle frequently asked questions (FAQs) and simulate escalation to a human agent when it cannot find a relevant answer. The application is built with a Python backend using FastAPI and a simple, clean frontend interface.
 
+## Demo Video
+
+[![AI Chatbot Demo Video](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ "AI Chatbot Demo")
+
+**Click the thumbnail above to watch a full demonstration of the chatbot in action.**
+
 ## Features
 
 * **FAQ Answering:** Uses semantic search to find the most relevant answer from a knowledge base.
