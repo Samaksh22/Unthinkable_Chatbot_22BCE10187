@@ -4,11 +4,9 @@ This project is an AI-powered customer support chatbot designed to handle freque
 
 ## Demo Video
 
-[![AI Chatbot Demo Video](https://github.com/Samaksh22/chatbot/blob/main/thumbnail.png?raw=true)](https://github.com/Samaksh22/chatbot/blob/main/Recorded%20Video.mp4 "AI Chatbot Demo")
+[![AI Chatbot Demo Video](https://raw.githubusercontent.com/Samaksh22/chatbot/main/thumbnail.png)](https://drive.google.com/file/d/1bWkkTjC2EQ0dTiBhsSTtd93ezGknnVra/view?usp=sharing)
 
 **Click the thumbnail above to watch a full demonstration of the chatbot in action.**
-
-You can also access the video via this [Google Drive Link](https://drive.google.com/file/d/1bWkkTjC2EQ0dTiBhsSTtd93ezGknnVra/view?usp=sharing).
 
 ## Features
 
@@ -32,7 +30,7 @@ Follow these steps to set up and run the project locally.
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/Samaksh22/chatbot.git](https://github.com/Samaksh22/chatbot.git)
+    git clone <your-repository-url>
     cd chatbot
     ```
 
@@ -73,7 +71,7 @@ Once the setup is complete, you can start the backend server using Uvicorn.
 2.  **Access the Application**
     Open your web browser and navigate to:
     ```
-    [http://12.0.0.1:8000](http://12.0.0.1:8000)
+    [http://127.0.0.1:8000](http://127.0.0.1:8000)
     ```
 
 ## API Endpoints
