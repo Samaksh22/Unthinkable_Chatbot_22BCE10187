@@ -69,8 +69,7 @@ class Chatbot:
         # Find the index of the most similar FAQ
         best_match_idx = int(similarities.argmax().item())
 
-        # If the similarity is very low, it's likely not a relevant FAQ
-        if similarities[best_match_idx] < 0.5:
+        if similarities[best_match_idx] < 0.4:
             return "No relevant FAQ found."
 
         return self.faqs['combined'].iloc[best_match_idx]
