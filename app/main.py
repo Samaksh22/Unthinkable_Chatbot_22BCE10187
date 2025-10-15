@@ -72,3 +72,5 @@ app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 async def read_index():
     """Serves the main index.html file."""
     return FileResponse('frontend/index.html')
+
+
