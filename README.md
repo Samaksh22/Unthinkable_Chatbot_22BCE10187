@@ -6,7 +6,7 @@ This project is an AI-powered customer support chatbot designed to handle freque
 
 [![AI Chatbot Demo Video](https://raw.githubusercontent.com/Samaksh22/chatbot/main/thumbnail.png)](https://drive.google.com/file/d/1bWkkTjC2EQ0dTiBhsSTtd93ezGknnVra/view?usp=sharing)
 
-**Click the thumbnail above to watch a full demonstration of the chatbot in action.**
+**Click the thumbnail above or [click here to watch the full demo](https://drive.google.com/file/d/1bWkkTjC2EQ0dTiBhsSTtd93ezGknnVra/view?usp=sharing).**
 
 ## Features
 
