@@ -49,7 +49,7 @@ class Chatbot:
     def __init__(self, faq_path="data/faqs.csv"):
         """Initializes the chatbot, loads the LLM, embedding model, and FAQ data."""
         # Initialize the Gemini LLM
-        self.llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.3)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3)
 
         # Initialize the sentence transformer model for semantic search
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -69,6 +69,7 @@ class Chatbot:
         # Find the index of the most similar FAQ
         best_match_idx = int(similarities.argmax().item())
 
+        # If the similarity is very low, it's likely not a relevant FAQ
         if similarities[best_match_idx] < 0.4:
             return "No relevant FAQ found."
 
@@ -88,14 +89,20 @@ class Chatbot:
     def get_response(self, session_id: str, user_message: str) -> str:
         """The main method to get a response from the chatbot."""
         
-        # --- NEW: Hardcoded Greeting Check ---
-        # Normalize user input for a more reliable check
+        # --- IMPROVED: Hardcoded Conversational Check ---
         normalized_message = user_message.lower().strip("?!., ")
-        greetings = {"hello", "hi", "hii", "hey", "how are you"}
         
-        if normalized_message in greetings:
-            return "Hello! How can I assist you today?"
-        # --- End of New Logic ---
+        # Check for simple greetings
+        greetings = ["hello", "hi", "hii", "hey"]
+        if any(greeting in normalized_message for greeting in greetings) and len(normalized_message) < 15:
+             return "Hello! How can I assist you today?"
+
+        # Check for simple pleasantries
+        if normalized_message in ["how are you", "how are you?"]:
+            return "I'm just a program, but I'm ready to help! What can I assist you with today?"
+        if normalized_message in ["thanks", "thank you"]:
+            return "You're welcome! Is there anything else I can help with?"
+        # --- End of Improved Logic ---
 
         # 1. Retrieve conversation history from the database
         history_records = database.get_conversation_history(session_id)
@@ -120,7 +127,5 @@ class Chatbot:
             return "I'm sorry, I can't seem to find the answer. I will escalate this to a human agent for you."
         else:
             return llm_response
-        
-# Create a single instance of the Chatbot.
-# This is efficient as models are loaded only once when the app starts.
+
 chatbot_instance = Chatbot()
